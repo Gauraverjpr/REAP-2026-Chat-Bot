@@ -43,9 +43,9 @@ st.write("**Frequently Asked Topics:**")
 q_col1, q_col2, q_col3 = st.columns(3)
 quick_prompt = None
 
-if q_col1.button("📅 Important Dates"): quick_prompt = "When will the application form be available?"
-if q_col2.button("💰 Fee Details"): quick_prompt = "application fee"
-if q_col3.button("📄 Domicile Rules"): quick_prompt = "do I need domicile certificate"
+if q_col1.button("📅 Important Dates"): quick_prompt = "Registration Dates"
+if q_col2.button("💰 Fee Details"): quick_prompt = "Fee Details"
+if q_col3.button("📄 Domicile Rules"): quick_prompt = "Do I need domicile certificate?"
 
 st.markdown("---")
 
