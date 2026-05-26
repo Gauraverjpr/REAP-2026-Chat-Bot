@@ -68,10 +68,12 @@ if "messages" not in st.session_state:
          "avatar": "🏛️"}
     ]
 
-# 6. Display Previous Messages
-for message in st.session_state.messages:
-    with st.chat_message(message["role"], avatar=message.get("avatar")):
-        st.markdown(message["content"])
+# 6. Display Previous Messages (Wrapped in a Native Border)
+chat_box = st.container(border=True)
+with chat_box:
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"], avatar=message.get("avatar")):
+            st.markdown(message["content"])
 
 # 7. Handle User Input
 user_input = st.chat_input("Type your question here...")
