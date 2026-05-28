@@ -118,7 +118,7 @@ if prompt:
     st.session_state.messages.append({"role": "assistant", "content": bot_reply, "avatar": "🏛️"})
 
 # 7. DRAW THE BORDERED CHAT BOX SECOND
-chat_box = st.container(height=450, border=True)
+chat_box = st.container(border=True)
 
 with chat_box:
     for message in st.session_state.messages:
