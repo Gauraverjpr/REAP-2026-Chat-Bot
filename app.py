@@ -90,7 +90,7 @@ if "messages" not in st.session_state:
     ]
 
 # 6. DRAW THE CHAT HISTORY FIRST (Inside a Fixed Box)
-chat_box = st.container(height=400, border=True)
+chat_box = st.container(border=True)
 
 with chat_box:
     for message in st.session_state.messages:
