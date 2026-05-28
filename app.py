@@ -118,7 +118,7 @@ if prompt:
     st.session_state.messages.append({"role": "assistant", "content": bot_reply, "avatar": "🏛️"})
 
 # 7. DRAW THE BORDERED CHAT BOX SECOND
-chat_box = st.container(border=True)
+chat_box = st.container(height=450, border=True)
 
 with chat_box:
     for message in st.session_state.messages:
@@ -129,37 +129,6 @@ with chat_box:
 st.markdown("---")
 st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Information Booklet](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
 
-# 9. Force Scroll to Top (The "Aggressive" Fix)
-# This loops 10 times over 1 second to fight Streamlit's native autofocus
-components.html(
-    """
-    <script>
-        let attempts = 0;
-        let scrollInterval = setInterval(function() {
-            const parentDoc = window.parent.document;
-            
-            // 1. Find the main scroll container for Streamlit v1.34 and force it to the top
-            const appContainer = parentDoc.querySelector('[data-testid="stAppViewContainer"]');
-            if (appContainer) {
-                appContainer.scrollTo({top: 0, behavior: 'instant'});
-            }
-            
-            // 2. Find the chat input box and remove its focus to stop the yanking behavior
-            const chatInput = parentDoc.querySelector('[data-testid="stChatInput"] textarea');
-            if (chatInput) {
-                chatInput.blur(); 
-            }
-            
-            attempts++;
-            // Stop the loop after 1 second (100ms * 10 attempts)
-            if (attempts > 10) { 
-                clearInterval(scrollInterval);
-            }
-        }, 100); 
-    </script>
-    """,
-    height=0
-)
 
 
 
