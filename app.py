@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import streamlit.components.v1 as components
 
 # 1. Page Configuration
 st.set_page_config(page_title="REAP 2026 Assistant", page_icon="🎓", layout="centered")
@@ -19,7 +18,6 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 @st.cache_data
 def load_faq_data():
     try:
-        # POINT TO YOUR NEW EXCEL FILE HERE
         df = pd.read_excel('File_1_Final.xlsx')
         if 'FAQDescription' in df.columns:
             df['FAQDescription'] = df['FAQDescription'].str.replace('reaprajasthan.com', 'reaprajasthan.co.in')
@@ -40,8 +38,8 @@ with col2:
         st.session_state.messages = [{"role": "assistant", "content": "Hello! How can I help you with your REAP 2026 admission queries today?", "avatar": "🏛️"}]
         st.rerun()
 
-# ----------------- NEW VISUALIZATION DASHBOARD -----------------
-st.write("") # Adds spacing
+# ----------------- VISUALIZATION DASHBOARD -----------------
+st.write("") 
 m_col1, m_col2, m_col3 = st.columns(3)
 m_col1.metric(label="REAP Status", value="Active 🟢", delta="2026 Session")
 m_col2.metric(label="Total Colleges", value="73", delta="Govt. & Private")
@@ -66,7 +64,7 @@ with st.expander("📊 View Seat Distribution Details"):
     st.markdown("* **Private Institutions:** 20,091 Seats")
     st.markdown("* **Government Institutions:** 7,536 Seats")
     
-# Verified data based on actual 27,627 seat matrix
+    # Corrected data based on verified 27,627 seat matrix
     dist_data = pd.DataFrame({
         "District": ["Jaipur", "Jodhpur", "Udaipur", "Ajmer", "Kota"],
         "Seats": [11781, 2291, 2040, 1568, 1414] 
@@ -85,18 +83,22 @@ if q_col1.button("📅 Important Dates"): quick_prompt = "Registration Dates"
 if q_col2.button("💰 Fee Details"): quick_prompt = "Fee Details"
 if q_col3.button("📄 Domicile Rules"): quick_prompt = "Do I need domicile certificate?"
 
-st.markdown("---")
-
 # 5. Initialize State
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hello! How can I help you with your REAP 2026 admission queries today?", "avatar": "🏛️"}
     ]
 
-# 6. GET INPUT & PROCESS LOGIC FIRST
-prompt = quick_prompt
+# 6. DRAW THE CHAT HISTORY FIRST (Inside a Fixed Box)
+chat_box = st.container(height=400, border=True)
 
-# Recreate the chat input using a standard form (Prevents Auto-Scrolling!)
+with chat_box:
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"], avatar=message.get("avatar")):
+            st.markdown(message["content"])
+
+# 7. DRAW THE INPUT FORM SECOND (Directly under the chat box)
+prompt = quick_prompt
 with st.form("chat_input_form", clear_on_submit=True, border=False):
     input_col, btn_col = st.columns([5, 1])
     with input_col:
@@ -107,6 +109,7 @@ with st.form("chat_input_form", clear_on_submit=True, border=False):
 if submitted and user_input:
     prompt = user_input
 
+# 8. PROCESS LOGIC & INSTANT RERUN
 if prompt:
     # Append User Message
     st.session_state.messages.append({"role": "user", "content": prompt, "avatar": "🧑‍🎓"})
@@ -126,19 +129,10 @@ if prompt:
 
     # Append Bot Message
     st.session_state.messages.append({"role": "assistant", "content": bot_reply, "avatar": "🏛️"})
-            
-# 7. DRAW THE BORDERED CHAT BOX SECOND
-chat_box = st.container(border=True)
+    
+    # MAGIC FIX: Instantly trigger a page rerun to update the chat box above!
+    st.rerun()
 
-with chat_box:
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"], avatar=message.get("avatar")):
-            st.markdown(message["content"])
-
-# 8. Disclaimer
+# 9. Disclaimer
 st.markdown("---")
 st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Information Booklet](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
-
-
-
-
