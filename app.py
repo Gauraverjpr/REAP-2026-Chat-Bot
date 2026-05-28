@@ -65,10 +65,10 @@ with st.expander("📊 View Seat Distribution Details"):
     st.markdown("* **Private Institutions:** 20,091 Seats")
     st.markdown("* **Government Institutions:** 7,536 Seats")
     
-    # Simple static visualization based on verified data
+# Verified data based on actual 27,627 seat matrix
     dist_data = pd.DataFrame({
-        "District": ["Udaipur", "Jaipur", "Jodhpur", "Ajmer", "Kota"],
-        "Seats": [15200, 11781, 2291, 1568, 1414] # Approx breakdown from data
+        "District": ["Jaipur", "Jodhpur", "Udaipur", "Ajmer", "Kota"],
+        "Seats": [11781, 2291, 2040, 1568, 1414] 
     }).set_index("District")
     
     st.write("**Top 5 Hubs by Seat Availability:**")
