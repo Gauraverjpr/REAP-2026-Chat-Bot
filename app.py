@@ -94,8 +94,18 @@ if "messages" not in st.session_state:
     ]
 
 # 6. GET INPUT & PROCESS LOGIC FIRST
-user_input = st.chat_input("Type your question here...")
-prompt = quick_prompt or user_input
+prompt = quick_prompt
+
+# Recreate the chat input using a standard form (Prevents Auto-Scrolling!)
+with st.form("chat_input_form", clear_on_submit=True, border=False):
+    input_col, btn_col = st.columns([5, 1])
+    with input_col:
+        user_input = st.text_input("Ask a question:", placeholder="Type your question here...", label_visibility="collapsed")
+    with btn_col:
+        submitted = st.form_submit_button("Send 📩")
+
+if submitted and user_input:
+    prompt = user_input
 
 if prompt:
     # Append User Message
@@ -116,7 +126,7 @@ if prompt:
 
     # Append Bot Message
     st.session_state.messages.append({"role": "assistant", "content": bot_reply, "avatar": "🏛️"})
-
+            
 # 7. DRAW THE BORDERED CHAT BOX SECOND
 chat_box = st.container(border=True)
 
