@@ -129,20 +129,20 @@ with chat_box:
 st.markdown("---")
 st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Information Booklet](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
 
-# 9. Force Scroll to Top
-# This invisible iframe runs a quick JavaScript command to keep the view at the top
+# 9. Force Scroll to Top (Delayed)
+# This waits 500ms for Streamlit to finish rendering the chat input, then scrolls up
 components.html(
     """
     <script>
-        // Target the main scrollable container of the Streamlit app
-        const mainContainer = window.parent.document.querySelector('.main');
-        if (mainContainer) {
-            // Smoothly scroll back to the top
-            mainContainer.scrollTo({top: 0, behavior: 'smooth'});
-        }
+        setTimeout(function() {
+            const mainContainer = window.parent.document.querySelector('.main');
+            if (mainContainer) {
+                mainContainer.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }, 500); // 500 milliseconds delay
     </script>
     """,
-    height=0 # Keeps it completely invisible
+    height=0
 )
 
 
