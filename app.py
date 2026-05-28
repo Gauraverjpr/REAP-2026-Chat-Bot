@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import streamlit.components.v1 as components
 
 # 1. Page Configuration
 st.set_page_config(page_title="REAP 2026 Assistant", page_icon="🎓", layout="centered")
@@ -127,3 +128,22 @@ with chat_box:
 # 8. Disclaimer
 st.markdown("---")
 st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Information Booklet](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
+
+# 9. Force Scroll to Top
+# This invisible iframe runs a quick JavaScript command to keep the view at the top
+components.html(
+    """
+    <script>
+        // Target the main scrollable container of the Streamlit app
+        const mainContainer = window.parent.document.querySelector('.main');
+        if (mainContainer) {
+            // Smoothly scroll back to the top
+            mainContainer.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
+    """,
+    height=0 # Keeps it completely invisible
+)
+
+
+
