@@ -23,7 +23,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 @st.cache_data
 def load_faq_data():
     try:
-        df = pd.read_excel('File_1_Final.xlsx')
+        df = pd.read_excel('REAP_2026_FAQ.xlsx')
         if 'FAQDescription' in df.columns:
             df['FAQDescription'] = df['FAQDescription'].str.replace('reaprajasthan.com', 'reaprajasthan.co.in')
             df['FAQDescription'] = df['FAQDescription'].str.replace('barchrajasthan.com', 'barchrajasthan.co.in')
