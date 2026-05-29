@@ -15,11 +15,9 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# 2. Load Data
-@st.cache_data
+# 2. Load Data (Cache Removed for Live Updates)
 def load_faq_data():
     try:
-        # ⚠️ CHANGE THIS FILENAME IF YOUR GITHUB FILE IS NAMED DIFFERENTLY
         df = pd.read_excel('REAP_2026_FAQ.xlsx') 
         if 'FAQDescription' in df.columns:
             df['FAQDescription'] = df['FAQDescription'].str.replace('reaprajasthan.com', 'reaprajasthan.co.in')
