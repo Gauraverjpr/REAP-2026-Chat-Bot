@@ -4,12 +4,17 @@ import pandas as pd
 # 1. Page Configuration
 st.set_page_config(page_title="REAP 2026 Assistant", page_icon="🎓", layout="centered")
 
-# Hide default menus
+# Hide default menus and the "Press Enter to apply" text
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
+            
+            /* This targets and hides the 'Press Enter to apply' text */
+            [data-testid="InputInstructions"] {
+                display: none !important;
+            }
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -117,24 +122,44 @@ if prompt:
     # Append User Message
     st.session_state.messages.append({"role": "user", "content": prompt, "avatar": "🧑‍🎓"})
 
-    # Search Logic
     user_text = prompt.lower()
+    user_words = user_text.split()
     bot_reply = "I couldn't find an exact answer for that. Please raise a complaint on the ticket helpline available in the candidate panel on the portal homepage and please save your ticket number for further communication."
-
+    
+    # --- SMART SCORING SEARCH ENGINE ---
     if not faq_df.empty:
+        best_match_score = 0
+        
         for index, row in faq_df.iterrows():
             if pd.isna(row['FAQKeyWords']):
                 continue
+                
             keywords = [k.strip().lower() for k in str(row['FAQKeyWords']).split(',')]
-            if any(word in user_text for word in keywords if word):
+            score = 0
+            
+            for k in keywords:
+                if not k: continue
+                
+                # Point System 1: Exact phrase exists in user text (Strongest match)
+                if k in user_text:
+                    score += len(k) * 2 
+                    continue
+                    
+                # Point System 2: Partial matches (e.g. 'Math' triggers 'Mathematics')
+                for u_word in user_words:
+                    if len(u_word) >= 3 and (k.startswith(u_word) or u_word.startswith(k)):
+                        score += len(k)
+                        break 
+            
+            # Keep the answer with the highest score
+            if score > best_match_score:
+                best_match_score = score
                 bot_reply = str(row['FAQDescription'])
-                break 
 
     # Append Bot Message
     st.session_state.messages.append({"role": "assistant", "content": bot_reply, "avatar": "🏛️"})
     
     # MAGIC FIX: Instantly trigger a page rerun to update the chat box above!
     st.rerun()
-
 
 
