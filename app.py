@@ -4,17 +4,13 @@ import pandas as pd
 # 1. Page Configuration
 st.set_page_config(page_title="REAP 2026 Assistant", page_icon="🎓", layout="centered")
 
-# Hide default menus and the "Press Enter to apply" text
+# Hide default menus and "Press Enter to apply" instruction
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
-            
-            /* This targets and hides the 'Press Enter to apply' text */
-            [data-testid="InputInstructions"] {
-                display: none !important;
-            }
+            [data-testid="InputInstructions"] { display: none !important; }
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -23,7 +19,8 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 @st.cache_data
 def load_faq_data():
     try:
-        df = pd.read_excel('REAP_2026_FAQ.xlsx')
+        # ⚠️ CHANGE THIS FILENAME IF YOUR GITHUB FILE IS NAMED DIFFERENTLY
+        df = pd.read_excel('REAP_2026_FAQ.xlsx') 
         if 'FAQDescription' in df.columns:
             df['FAQDescription'] = df['FAQDescription'].str.replace('reaprajasthan.com', 'reaprajasthan.co.in')
             df['FAQDescription'] = df['FAQDescription'].str.replace('barchrajasthan.com', 'barchrajasthan.co.in')
@@ -34,7 +31,7 @@ def load_faq_data():
 
 faq_df = load_faq_data()
 
-# 3. Header & Clear Button
+# 3. Header, Clear Button & Disclaimer
 col1, col2 = st.columns([4, 1])
 with col1:
     st.title("🎓 REAP 2026 Assistant")
@@ -45,8 +42,7 @@ with col2:
 
 st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Information Booklet](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
 
-
-# ----------------- VISUALIZATION DASHBOARD -----------------
+# 4. VISUALIZATION DASHBOARD
 st.write("") 
 m_col1, m_col2, m_col3 = st.columns(3)
 m_col1.metric(label="REAP Status", value="Active 🟢", delta="2026 Session")
@@ -72,7 +68,6 @@ with st.expander("📊 View Seat Distribution Details"):
     st.markdown("* **Private Institutions:** 20,091 Seats")
     st.markdown("* **Government Institutions:** 7,536 Seats")
     
-    # Corrected data based on verified 27,627 seat matrix
     dist_data = pd.DataFrame({
         "District": ["Jaipur", "Jodhpur", "Udaipur", "Ajmer", "Kota"],
         "Seats": [11781, 2291, 2040, 1568, 1414] 
@@ -80,9 +75,8 @@ with st.expander("📊 View Seat Distribution Details"):
     
     st.write("**Top 5 Hubs by Seat Availability:**")
     st.bar_chart(dist_data, color="#4da6ff")
-# ---------------------------------------------------------------
 
-# 4. Quick Ask Buttons
+# 5. Quick Ask Buttons
 st.write("**Frequently Asked Topics:**")
 q_col1, q_col2, q_col3 = st.columns(3)
 quick_prompt = None
@@ -91,13 +85,13 @@ if q_col1.button("📅 Important Dates"): quick_prompt = "Registration Dates"
 if q_col2.button("💰 Fee Details"): quick_prompt = "Fee Details"
 if q_col3.button("📄 Domicile Rules"): quick_prompt = "Do I need domicile certificate?"
 
-# 5. Initialize State
+# 6. Initialize State
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hello! How can I help you with your REAP 2026 admission queries today?", "avatar": "🏛️"}
     ]
 
-# 6. DRAW THE CHAT HISTORY FIRST (Inside a Fixed Box)
+# 7. DRAW THE CHAT HISTORY FIRST (Dynamic Box)
 chat_box = st.container(border=True)
 
 with chat_box:
@@ -105,7 +99,7 @@ with chat_box:
         with st.chat_message(message["role"], avatar=message.get("avatar")):
             st.markdown(message["content"])
 
-# 7. DRAW THE INPUT FORM SECOND (Directly under the chat box)
+# 8. DRAW THE INPUT FORM SECOND
 prompt = quick_prompt
 with st.form("chat_input_form", clear_on_submit=True, border=False):
     input_col, btn_col = st.columns([5, 1])
@@ -117,16 +111,14 @@ with st.form("chat_input_form", clear_on_submit=True, border=False):
 if submitted and user_input:
     prompt = user_input
 
-# 8. PROCESS LOGIC & INSTANT RERUN
+# 9. SMART SEARCH PROCESS LOGIC & RERUN
 if prompt:
-    # Append User Message
     st.session_state.messages.append({"role": "user", "content": prompt, "avatar": "🧑‍🎓"})
 
     user_text = prompt.lower()
     user_words = user_text.split()
     bot_reply = "I couldn't find an exact answer for that. Please raise a complaint on the ticket helpline available in the candidate panel on the portal homepage and please save your ticket number for further communication."
     
-    # --- SMART SCORING SEARCH ENGINE ---
     if not faq_df.empty:
         best_match_score = 0
         
@@ -140,26 +132,21 @@ if prompt:
             for k in keywords:
                 if not k: continue
                 
-                # Point System 1: Exact phrase exists in user text (Strongest match)
+                # Strong exact match
                 if k in user_text:
                     score += len(k) * 2 
                     continue
-                    
-                # Point System 2: Partial matches (e.g. 'Math' triggers 'Mathematics')
+                
+                # Partial word match
                 for u_word in user_words:
                     if len(u_word) >= 3 and (k.startswith(u_word) or u_word.startswith(k)):
                         score += len(k)
                         break 
             
-            # Keep the answer with the highest score
+            # Highest score wins
             if score > best_match_score:
                 best_match_score = score
                 bot_reply = str(row['FAQDescription'])
 
-    # Append Bot Message
     st.session_state.messages.append({"role": "assistant", "content": bot_reply, "avatar": "🏛️"})
-    
-    # MAGIC FIX: Instantly trigger a page rerun to update the chat box above!
     st.rerun()
-
-
