@@ -38,7 +38,7 @@ with col2:
         st.session_state.messages = [{"role": "assistant", "content": "Hello! How can I help you with your REAP 2026 admission queries today?", "avatar": "🏛️"}]
         st.rerun()
 
-st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Information Booklet](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
+st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Website](https://www.reaprajasthan.co.in) or raise a ticket in your candidate panel.")
 
 # 4. VISUALIZATION DASHBOARD
 st.write("") 
