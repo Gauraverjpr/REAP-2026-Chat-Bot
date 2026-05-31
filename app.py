@@ -4,13 +4,40 @@ import pandas as pd
 # 1. Page Configuration
 st.set_page_config(page_title="REAP 2026 Assistant", page_icon="🎓", layout="centered")
 
-# Hide default menus and "Press Enter to apply" instruction
+# Hide default menus, "Press Enter to apply" instruction, and apply custom REAP branding
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
             [data-testid="InputInstructions"] { display: none !important; }
+            [data-testid="stAppDeployButton"] { display: none !important; }
+            .viewerBadge_container__ { display: none !important; }
+            
+            /* REAP BRANDING: Deep Maroon Headers */
+            h1, h2, h3 { color: #A32626 !important; }
+            
+            /* REAP BRANDING: Maroon Buttons */
+            div.stButton > button:first-child, div.stFormSubmitButton > button:first-child {
+                background-color: #A32626 !important;
+                color: white !important;
+                border: none !important;
+                font-weight: bold !important;
+            }
+            div.stButton > button:first-child:hover, div.stFormSubmitButton > button:first-child:hover {
+                background-color: #8B1A1A !important; 
+                transform: scale(1.02);
+            }
+            
+            /* REAP BRANDING: Cream Bot Chat Bubbles */
+            .stChatMessage:has([data-testid="chatAvatarIcon-assistant"]) {
+                background-color: #FDF5E6 !important;
+                border: 1px solid #EEDcBa !important;
+                border-radius: 10px;
+            }
+            
+            /* REAP BRANDING: Maroon Metric Numbers */
+            [data-testid="stMetricValue"] { color: #A32626 !important; }
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -50,7 +77,7 @@ st.markdown("---")
 
 with st.expander("📅 View Official Admission Timeline"):
     st.markdown("""
-    **B.E. / B.Tech Course:**
+    **B.E. / B.Tech / B.Plan Course:**
     * **13.05.2026:** Commencement of Online Registration
     * **10.06.2026:** Last Date for Fee Payment (Rs. 885/-)
     * **12.06.2026:** Last Date for Form Submission
