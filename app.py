@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # 1. Page Configuration
-st.set_page_config(page_title="REAP 2026 Assistant", page_icon="🎓", layout="centered")
+st.set_page_config(page_title="REAP-2026 Assistant", page_icon="🎓", layout="centered")
 
 # Hide default menus, "Press Enter to apply" instruction, and apply custom REAP branding
 hide_st_style = """
@@ -59,13 +59,13 @@ faq_df = load_faq_data()
 # 3. Header, Clear Button & Disclaimer
 col1, col2 = st.columns([4, 1])
 with col1:
-    st.title("🎓 REAP 2026 Assistant")
+    st.title("🎓 REAP-2026 Assistant")
 with col2:
     if st.button("🗑️ Clear Chat"):
-        st.session_state.messages = [{"role": "assistant", "content": "Hello! How can I help you with your REAP 2026 admission queries today?", "avatar": "🏛️"}]
+        st.session_state.messages = [{"role": "assistant", "content": "Hello! How can I help you with your REAP-2026 admission queries today?", "avatar": "🏛️"}]
         st.rerun()
 
-st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP 2026 Website](https://www.reaprajasthan.co.in) or raise a ticket in your [candidate panel](https://help.reaprajasthan.co.in/FAQArea/FAQSupport/Index).")
+st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based on the standard REAP-2026 FAQ. For official, binding information, please refer to the [REAP-2026 Website](https://www.reaprajasthan.co.in) or raise a ticket in your [candidate panel](https://help.reaprajasthan.co.in/FAQArea/FAQSupport/Index).")
 
 # 4. VISUALIZATION DASHBOARD
 st.write("") 
@@ -113,7 +113,7 @@ if q_col3.button("📄 Domicile Rules"): quick_prompt = "Do I need domicile cert
 # 6. Initialize State
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! How can I help you with your REAP 2026 admission queries today?", "avatar": "🏛️"}
+        {"role": "assistant", "content": "Hello! How can I help you with your REAP-2026 admission queries today?", "avatar": "🏛️"}
     ]
 
 # 7. DRAW THE CHAT HISTORY FIRST (Dynamic Box)
