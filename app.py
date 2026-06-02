@@ -95,7 +95,7 @@ with st.expander("📊 View Seat Distribution Details"):
     
     dist_data = pd.DataFrame({
         "District": ["Jaipur", "Jodhpur", "Udaipur", "Ajmer", "Kota"],
-        "Seats": [11781, 2291, 2040, 1568, 1414] 
+        "Seats": [11854, 2322, 1764, 1458, 1245] 
     }).set_index("District")
     
     st.write("**Top 5 Hubs by Seat Availability:**")
