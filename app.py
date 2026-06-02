@@ -71,8 +71,8 @@ st.caption("⚠️ **Disclaimer:** This virtual assistant provides answers based
 st.write("") 
 m_col1, m_col2, m_col3 = st.columns(3)
 m_col1.metric(label="REAP Status", value="Active 🟢", delta="2026 Session")
-m_col2.metric(label="Total Colleges", value="73", delta="Govt. & Private")
-m_col3.metric(label="Total Seats", value="27,627", delta="Across Rajasthan")
+m_col2.metric(label="Total Colleges", value="75", delta="Govt. & Private")
+m_col3.metric(label="Total Seats", value="26,289", delta="Across Rajasthan")
 st.markdown("---")
 
 with st.expander("📅 View Official Admission Timeline"):
@@ -90,8 +90,8 @@ with st.expander("📅 View Official Admission Timeline"):
 
 with st.expander("📊 View Seat Distribution Details"):
     st.write("**Total Capacity Breakdown:**")
-    st.markdown("* **Private Institutions:** 20,091 Seats")
-    st.markdown("* **Government Institutions:** 7,536 Seats")
+    st.markdown("* **Private Institutions:** 19,279 Seats")
+    st.markdown("* **Government Institutions:** 7,010 Seats")
     
     dist_data = pd.DataFrame({
         "District": ["Jaipur", "Jodhpur", "Udaipur", "Ajmer", "Kota"],
