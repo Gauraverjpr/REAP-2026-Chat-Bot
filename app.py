@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as s
 import pandas as pd
 
 # 1. Page Configuration
